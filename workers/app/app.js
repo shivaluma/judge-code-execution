@@ -56,7 +56,7 @@ function runCode(apiBody, ch, msg) {
       var status = time.pop();
       output = [];
       if (status == 'Wrong Answer') {
-        output = time.pop().split(' ');
+        output = time.pop().split('|||');
       }
       let result = {
         output: output[0],

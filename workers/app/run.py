@@ -55,7 +55,7 @@ def run(file, input, timeout, lang):
         endtime = time()
         print((endtime-starttime)*1000)
         if (expected_results[i].strip() != result):
-            print(result, expected_results[i])
+            print("{}|||{}".format(result, expected_results[i]))
             return 999
     return 200
 
