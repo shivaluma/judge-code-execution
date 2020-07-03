@@ -12,16 +12,14 @@ codes = {200: 'Accepted', 404: 'Server Error',
 
 
 def compile(file, lang):
-
     if(lang == 'python3'):
         return 200
-
     if (os.path.isfile(file)):
         if lang == 'c':
             os.system('gcc -x c -Wall -O2 -static -pipe ' + file + ' -lm')
         elif lang == 'cpp':
             os.system(
-                'g++ -x c++ -std=c++14 -Wall -O2 -static -pipe -fomit-frame-pointer ' + file + ' -lm')
+                'g++ -x c++ -std=c++11 -Wall -O2 -static -pipe ' + file)
         elif lang == 'java':
             os.system('javac -encoding UTF-8 -sourcepath . -d . ' + file)
         if (os.path.isfile('a.out')) or (os.path.isfile('main.class')):
@@ -33,7 +31,7 @@ def compile(file, lang):
 
 
 def run(file, input, timeout, lang):
-    cmd = 'sudo -u judge '
+    cmd = ''
     if lang == 'java':
         cmd += 'java main'
     elif lang == 'c' or lang == 'cpp':

@@ -43,7 +43,7 @@ app.post('/submit', (req, res) => {
   };
 
   sendMessage(data);
-  res.status(202).send(req.hostname + '/results/' + data.folder);
+  res.status(202).send('http://' + req.hostname + '/results/' + data.folder);
 });
 
 app.get('/results/:id', (req, res) => {
@@ -76,8 +76,6 @@ connection.on('disconnect', function (err) {
 var channelWrapper = connection.createChannel({
   json: true,
   setup: function (channel) {
-    // `channel` here is a regular amqplib `ConfirmChannel`.
-
     return channel.assertQueue(QUEUE_NAME, { durable: true });
   },
 });
@@ -91,8 +89,8 @@ var sendMessage = function (data) {
     })
     .catch(function (err) {
       console.log('Message was rejected:', err.stack);
-      channelWrapper.close();
-      connection.close();
+      // channelWrapper.close();
+      // connection.close();
     });
 };
 

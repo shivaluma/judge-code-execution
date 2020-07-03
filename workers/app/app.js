@@ -59,8 +59,8 @@ function runCode(apiBody, ch, msg) {
         output = time.pop().split(' ');
       }
       let result = {
-        output: output[1],
-        expected_answer: output[0],
+        output: output[0],
+        expected_answer: output[1],
         time_used: time,
         stderr: `${stderr}`,
         status: `${status}`,
