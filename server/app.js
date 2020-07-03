@@ -43,7 +43,7 @@ app.post('/submit', (req, res) => {
   };
 
   sendMessage(data);
-  res.status(202).send('http://localhost:7000/results/' + data.folder);
+  res.status(202).send(req.hostname + '/results/' + data.folder);
 });
 
 app.get('/results/:id', (req, res) => {
