@@ -68,7 +68,7 @@ function runCode(apiBody, ch, msg) {
       };
 
       console.log(result);
-      console.log(apiBody);
+
       rimraf('../temp/' + apiBody.folder, function (err) {
         if (err) console.log(err);
       });

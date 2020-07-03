@@ -33,8 +33,11 @@ function random(size) {
   return require('crypto').randomBytes(size).toString('hex');
 }
 app.post('/submit', (req, res) => {
+  const { isBase64 } = req.body;
   let data = {
-    src: req.body.src,
+    src: isBase64
+      ? Buffer.from(req.body.src, 'base64').toString('utf8')
+      : req.body.src,
     input: req.body.stdin,
     expected_result: req.body.expected_result,
     lang: req.body.lang,

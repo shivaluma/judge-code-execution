@@ -19,7 +19,7 @@ def compile(file, lang):
             os.system('gcc -x c -Wall -O2 -static -pipe ' + file + ' -lm')
         elif lang == 'cpp':
             os.system(
-                'g++ -x c++ -std=c++11 -Wall -O2 -static -pipe ' + file)
+                'g++ -x c++ -std=c++11 -Wall -O2 -static -pipe -fomit-frame-pointer ' + file)
         elif lang == 'java':
             os.system('javac -encoding UTF-8 -sourcepath . -d . ' + file)
         if (os.path.isfile('a.out')) or (os.path.isfile('main.class')):
