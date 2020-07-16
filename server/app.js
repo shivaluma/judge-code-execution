@@ -46,19 +46,21 @@ app.post('/submit', (req, res) => {
   };
 
   sendMessage(data);
-  res.status(202).send('http://' + req.hostname + '/results/' + data.folder);
+  return res
+    .status(202)
+    .send('http://' + req.hostname + '/results/' + data.folder);
 });
 
 app.get('/results/:id', (req, res) => {
   let key = req.params.id;
   client.get(key, (err, status) => {
     if (status == null) {
-      res.status(202).json({ status: 'Queued' });
+      return res.status(202).json({ status: 'Queued' });
     }
 
     const response = JSON.parse(status);
     if (response.status == 'Processing') {
-      res.status(202).json(response);
+      return res.status(202).json(response);
     }
     return res.status(200).json(response);
   });

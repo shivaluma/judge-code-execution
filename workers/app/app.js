@@ -52,16 +52,17 @@ function runCode(apiBody, ch, msg) {
       console.log(err);
     } else {
       if (err) console.log(err);
-      var time = stdout.trim().split('\n');
-      var status = time.pop();
-      output = [];
-      if (status == 'Wrong Answer') {
-        output = time.pop().split('|||');
+      console.log(stdout);
+      var time = stdout.trim().split('!@#');
+      var status = time.pop().trim();
+      let output = time.pop().trim();
+      if (status === 'Wrong Answer') {
+        output = output.split('|||');
       }
       let result = {
         output: output[0],
         expected_answer: output[1],
-        time_used: time,
+        time_used: time.map((el) => el.trim()),
         stderr: `${stderr}`,
         status: `${status}`,
         submission_id: apiBody.folder,
