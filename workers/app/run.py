@@ -46,7 +46,7 @@ def run(file, input, timeout, lang):
         starttime = time()
         result = ""
         try:
-            result = subprocess.check_output("timeout {} {}".format(
+            result = subprocess.check_output("ulimit -v 262144; timeout {} {}".format(
                 timeout, cmd), universal_newlines=True, input=testcases[i], shell=True)
         except subprocess.CalledProcessError as e:
             if (e.returncode == 124):
@@ -55,7 +55,7 @@ def run(file, input, timeout, lang):
         endtime = time()
         print("{}!@#".format((endtime-starttime)*1000))
         if (expected_results[i].strip() != result.strip()):
-            print("{}|||{}!@#".format(result.strip(), expected_results[i]))
+            print("{}|||{}|||{}!@#".format(testcases[i], result.strip(), expected_results[i]))
             return 999
     return 200
 

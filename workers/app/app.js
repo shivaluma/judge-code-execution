@@ -53,22 +53,36 @@ function runCode(apiBody, ch, msg) {
     } else {
       if (err) console.log(err);
       console.log(stdout);
-      var time = stdout.trim().split('!@#');
-      var status = time.pop().trim();
-      let output = time.pop().trim();
-      if (status === 'Wrong Answer') {
-        output = output.split('|||');
-      }
-      let result = {
-        output: output[0],
-        expected_answer: output[1],
-        time_used: time.map((el) => el.trim()),
-        stderr: `${stderr}`,
-        status: `${status}`,
-        submission_id: apiBody.folder,
-      };
+      let result;
+      try {
+        var time = stdout.trim().split('!@#');
+        var status = time.pop().trim() || '';
 
-      console.log(result);
+        let output = time.pop().trim() || '';
+        if (status === 'Wrong Answer') {
+          output = output.split('|||');
+        }
+        result = {
+          input: output[0],
+          output: output[1],
+          expected_answer: output[2],
+          time_used: time.map((el) => el.trim()),
+          stderr: `${stderr}`,
+          status: `${status}`,
+          submission_id: apiBody.folder,
+          isError: false,
+        };
+      } catch (err) {
+        result = {
+          output: '',
+          expected_answer: '',
+          time_used: [],
+          stderr: stderr,
+          status: status || 'Memory Exceeded',
+          submission_id: apiBody.folder,
+          isError: true,
+        };
+      }
 
       rimraf('../temp/' + apiBody.folder, function (err) {
         if (err) console.log(err);
