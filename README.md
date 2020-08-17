@@ -21,7 +21,7 @@ These instructions will get you a copy of the project up and running on your loc
 1. Clone the repo
 
 ```sh
-git clone https://github.com/budukhyash/remote-code-execution-engine
+git clone https://github.com/shivaluma/Online-Judge-Code-Execution
 ```
 
 2. Run in the cloned directory
@@ -35,9 +35,7 @@ docker-compose up --build
 
 <!-- USAGE EXAMPLES -->
 
-## Documentation
 
-- [Api Docs](https://documenter.getpostman.com/view/11156949/Szt8fAgW?version=latest) - with examples using various languages.
 
 ## Built With
 
