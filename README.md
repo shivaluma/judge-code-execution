@@ -4,8 +4,7 @@ This API runs your code for you in a secure environment.The user can limit the m
 
 - C
 - C++
-- Python3
-- Java
+
 
 ## Getting Started
 
