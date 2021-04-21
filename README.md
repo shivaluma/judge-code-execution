@@ -1,6 +1,6 @@
 # Remote Code Execution Engine
 
-This API runs your code for you in a secure environment.The user can limit the memory and execution time.Currently this api supports 4 languages.
+This API runs your code for you in a secure environment.The user can limit the memory and execution time.Currently this api supports 2 languages.
 
 - C
 - C++
