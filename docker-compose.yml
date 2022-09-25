@@ -12,7 +12,7 @@ services:
     build: ./server
     restart: always
     ports:
-      - '80:7000'
+      - 7000:7000'
   worker:
     build: ./workers
     restart: always
