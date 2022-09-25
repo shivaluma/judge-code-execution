@@ -1,0 +1,21 @@
+name: Root pipeline
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      ECR_REPO_NAME: judgecore
+    secrets: inherit
+
+  deploy:
+    needs: [build]
+    uses: ./.github/workflows/deploy.yml
+    with:
+      ECR_REPO_NAME: judgecore
+    secrets: inherit

@@ -1,0 +1,32 @@
+name: Deploy
+
+on:
+  workflow_call:
+    inputs:
+      ECR_REPO_NAME:
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add VERSION_LABEL with commit short sha
+        run: echo "VERSION_LABEL=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+
+      - name: Run container on server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_IP }}
+          username: ${{ secrets.HOST_USERNAME }}
+          password: ${{ secrets.HOST_PASSWORD }}
+          script: |
+            echo "${{ secrets.GH_PASSWORD }}" | docker login ghcr.io -u "${{ secrets.GH_USERNAME }}" --password-stdin
+            docker pull ghcr.io/${{ secrets.GH_USERNAME }}/${{ inputs.ECR_REPO_NAME }}-server:${{ env.VERSION_LABEL }}
+            docker stop ${{ inputs.ECR_REPO_NAME }}-server > /dev/null 2>&1 || echo command failed $status
+            docker rm ${{ inputs.ECR_REPO_NAME }}-server > /dev/null 2>&1 || echo command failed $status
+            docker run -d --name ${{ inputs.ECR_REPO_NAME }}-server --net judge ghcr.io/${{ secrets.GH_USERNAME }}/${{ inputs.ECR_REPO_NAME }}-server:${{ env.VERSION_LABEL }}
+            docker pull ghcr.io/${{ secrets.GH_USERNAME }}/${{ inputs.ECR_REPO_NAME }}-worker:${{ env.VERSION_LABEL }}
+            docker stop ${{ inputs.ECR_REPO_NAME }}-worker > /dev/null 2>&1 || echo command failed $status
+            docker rm ${{ inputs.ECR_REPO_NAME }}-worker > /dev/null 2>&1 || echo command failed $status
+            docker run -d --name ${{ inputs.ECR_REPO_NAME }}-worker --net judge ghcr.io/${{ secrets.GH_USERNAME }}/${{ inputs.ECR_REPO_NAME }}-worker:${{ env.VERSION_LABEL }}

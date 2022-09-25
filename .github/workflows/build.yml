@@ -1,0 +1,38 @@
+name: Build & push image
+
+on:
+  workflow_call:
+    inputs:
+      ECR_REPO_NAME:
+        required: true
+        type: string
+
+jobs:
+  build-push-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to the Github Packages
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.TOKEN }}
+
+      - name: Add VERSION_LABEL with commit short sha
+        run: echo "VERSION_LABEL=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+
+      - name: Build and push Docker image for server
+        uses: docker/build-push-action@v2
+        with:
+          context: ./server
+          push: true
+          tags: ghcr.io/${{ secrets.GH_USERNAME }}/${{ inputs.ECR_REPO_NAME }}-server:${{ env.VERSION_LABEL }}
+      - name: Build and push Docker image for worker
+        uses: docker/build-push-action@v2
+        with:
+          context: ./workers
+          push: true
+          tags: ghcr.io/${{ secrets.GH_USERNAME }}/${{ inputs.ECR_REPO_NAME }}-worker:${{ env.VERSION_LABEL }}
