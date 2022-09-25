@@ -99,5 +99,5 @@ var sendMessage = function (data) {
     });
 };
 
-const port = process.env.PORT || 1007;
+const port = process.env.PORT || 3007;
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
